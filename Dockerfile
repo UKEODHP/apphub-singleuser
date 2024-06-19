@@ -1,4 +1,4 @@
-FROM jupyter/base-notebook:python-3.7.6
+FROM jupyter/base-notebook:python-3.11
 
 USER root
 
@@ -20,6 +20,6 @@ RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s
 
 # AWS CLI installation commands
 RUN	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
-	unzip awscliv2.zip && ./aws/install && \
+    unzip awscliv2.zip && ./aws/install && \
     rm -fr aws awscliv2.zip && \
     pip3 install awscli-plugin-endpoint
