@@ -3,11 +3,15 @@ FROM jupyter/base-notebook:python-3.11
 USER root
 
 # prerequisites
-RUN DEBIAN_FRONTEND="noninteractive" apt-get -y update && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    DEBIAN_FRONTEND="noninteractive" apt-get -y update && \
     apt-get -y install curl python3-pip ca-certificates unzip groff less tzdata keyboard-configuration
 
 # podman
-RUN echo "deb [trusted=yes] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/ /" | tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list && \
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    echo "deb [trusted=yes] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/ /" | tee /etc/apt/sources.list.d/devel:kubic:libcontainers:stable.list && \
     curl -L https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/Release.key | apt-key add - && \
     apt-get -y update && apt-get -y install podman && \
     rm -rf /var/lib/apt/lists/* && \
